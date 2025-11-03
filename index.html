@@ -1,0 +1,786 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PMB PLAST — One-page (toutes sections)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    html { scroll-behavior: smooth; }
+    .ti-tooltip{position:fixed;z-index:99999;max-width:320px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;font-size:12px;line-height:1.2;pointer-events:none;background:rgba(17,24,39,.96);color:#fff;border-radius:10px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08)}
+    .ti-badge{display:inline-block;padding:2px 6px;border-radius:9999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);margin-right:6px;font-size:11px}
+    .ti-toggle{position:fixed;left:12px;bottom:12px;z-index:99998;background:#fff;border:1px solid rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);border-radius:12px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px}
+    .ti-toggle input{accent-color:#000}.ti-muted{opacity:.7}
+    .ti-kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);padding:0 6px;border-radius:6px;font-size:11px}
+  </style>
+  <div class="ti-toggle">
+    <label><input id="ti-enable" type="checkbox" /> Inspecteur typo</label>
+    <span class="ti-muted">Touche <span class="ti-kbd">T</span></span>
+  </div>
+  <div id="ti-tooltip" class="ti-tooltip" style="display:none"></div>
+  <script>
+  (function(){
+    const tooltip=document.getElementById('ti-tooltip');
+    const toggle=document.getElementById('ti-enable');
+    let enabled=false;
+    const W={"100":"Thin","200":"Extra Light","300":"Light","400":"Regular","500":"Medium","600":"SemiBold","700":"Bold","800":"Extra Bold","900":"Black"};
+    function pxToRem(px){const base=parseFloat(getComputedStyle(document.documentElement).fontSize)||16;const v=parseFloat(px);return (v/base).toFixed(3)+'rem';}
+    function describe(el){const cs=getComputedStyle(el);const fam=(cs.fontFamily||'').split(',')[0].replace(/["']/g,'').trim();const size=cs.fontSize;const weight=cs.fontWeight;const wname=W[weight]||(parseInt(weight,10)>=700?'Bold+':(parseInt(weight,10)<=300?'Light-':'Regular-ish'));const style=cs.fontStyle;const lh=cs.lineHeight;const ls=cs.letterSpacing;const tag=el.tagName.toLowerCase();const classes=Array.from(el.classList||[]).filter(c=>/^(text-|font-|leading-|tracking-)/.test(c));return `
+      <div><span class="ti-badge">${tag}</span><span class="ti-badge">${fam}</span></div>
+      <div><b>Taille</b> : ${size} <span class="ti-muted">(${pxToRem(size)})</span></div>
+      <div><b>Graisse</b> : ${weight} <span class="ti-muted">(${wname}${style==='italic'?' • italic':''})</span></div>
+      <div><b>Interlignage</b> : ${lh}</div>
+      <div><b>Esp. lettres</b> : ${ls}</div>
+      ${classes.length?('<div><b>Tailwind</b> : '+classes.join(' ')+'</div>'):''}
+    `;}
+    function pos(e){const pad=12;let x=e.clientX+pad,y=e.clientY+pad;tooltip.style.display='block';tooltip.style.left=x+'px';tooltip.style.top=y+'px';const r=tooltip.getBoundingClientRect();if(x+r.width>innerWidth-8) tooltip.style.left=(e.clientX-r.width-pad)+'px';if(y+r.height>innerHeight-8) tooltip.style.top=(e.clientY-r.height-pad)+'px';}
+    function isTextual(el){if(!el||!(el instanceof Element))return false;const t=(el.innerText||'').trim();if(!t)return false;const s=getComputedStyle(el);return s.display!=='none'&&s.visibility!=='hidden'&&parseFloat(s.fontSize)>0;}
+    document.addEventListener('mousemove', e=>{ if(enabled) pos(e); });
+    document.addEventListener('mouseover', e=>{ if(!enabled) return; const t=e.target; if(t.closest('.ti-toggle')||t.closest('.ti-tooltip')) return; if(isTextual(t)) tooltip.innerHTML=describe(t); else tooltip.style.display='none';}, true);
+    document.addEventListener('mouseout', e=>{ if(!enabled) return; const to=e.relatedTarget; if(to&&(to.closest?.('.ti-toggle')||to.closest?.('.ti-tooltip'))) return; tooltip.style.display='none';}, true);
+    function set(v){enabled=v;toggle.checked=v;document.body.classList.toggle('cursor-help',v); if(!v) tooltip.style.display='none';}
+    toggle.addEventListener('change',()=>set(toggle.checked));
+    document.addEventListener('keydown',e=>{ if(e.key.toLowerCase()==='t') set(!enabled); });
+  })();
+  </script>
+
+  <style>html{scroll-behavior:smooth}</style>
+</head>
+<body id="top" class="min-h-screen bg-gradient-to-b from-slate-50 to-white text-slate-900">
+  <header class="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur">
+    <div class="mx-auto w-full max-w-7xl px-4 md:px-6 flex items-center gap-2 py-3">
+      <a href="#top" class="flex items-center gap-2">
+        <div class="h-9 w-9 rounded-xl bg-black text-white grid place-items-center font-bold">P</div>
+        <div class="leading-tight">
+          <div class="font-semibold">PMB PLAST</div>
+          <div class="text-[11px] text-slate-500">Injection & Assemblage – ISO 13485</div>
+        </div>
+      </a>
+      <nav class="ml-4 hidden lg:flex items-center gap-1"><a href="#solutions-medicales" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Solutions médicales</a><a href="#metiers" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Métiers</a><a href="#secteurs" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Secteurs</a><a href="#realisations" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Réalisations</a><a href="#entreprise" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Entreprise</a><a href="#contact" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100">Contact</a></nav>
+      <div class="ml-auto flex items-center gap-2 w-full max-w-xs">
+        <input class="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/10" placeholder="Rechercher… (CMD/CTRL+F)" />
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 md:px-6 py-10 md:py-14">
+    <section class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-10">
+        <span class="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium">ISO 9001 • ISO 13485</span>
+        <h1 class="mt-4 text-3xl md:text-5xl font-semibold leading-tight">Maquette — Toutes sections sur une page</h1>
+        <p class="mt-4 text-slate-700 max-w-2xl">Cette version “one-page” regroupe Accueil, Solutions médicales, Métiers, Secteurs, Réalisations, Entreprise et Contact pour un import plus facile dans Figma via des plugins d'import HTML.</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#solutions-medicales" class="rounded-xl px-4 py-2 text-sm font-medium transition bg-black text-white hover:bg-black/90">Aller aux Solutions médicales</a>
+          <a href="#realisations" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">Voir les Réalisations</a>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="solutions-medicales" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Solutions médicales</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <article id="solutions-medicales-1-diagnostic-in-vitro" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Solutions médicales</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">1 - Diagnostic In Vitro</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Diagnostic In Vitro - Menu Solutions médicales</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🧪 Page 1 – Diagnostic In Vitro (DIV)</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique pour dispositifs de diagnostic in vitro (DIV)</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Vous recherchez un partenaire expérimenté en injection plastique pour dispositifs de diagnostic in vitro ? PMB Plast met à disposition des fabricants du secteur médical son expertise complète : co-conception, réalisation de moules, injection thermoplastique et assemblage sous atmosphère contrôlée. Notre maîtrise du process industriel et de la qualité médicale (ISO 13485 et ISO 9001) nous permet de répondre aux exigences les plus strictes : propreté particulaire, biocompatibilité, stabilité dimensionnelle et traçabilité intégrale. Implantée à Pirey, au cœur du pôle microtechnique de Bourgogne-Franche-Comté, PMB Plast accompagne vos projets de dispositifs DIV depuis le prototypage jusqu’à la production série. Nous garantissons des composants plastiques précis, propres et parfaitement conformes aux exigences réglementaires du secteur santé.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels défis rencontrent les fabricants de dispositifs de diagnostic in vitro ?</p>
+<p class='text-slate-700'>Choix de matières plastiques biocompatibles et compatibles stérilisation (PC, PP, PMMA…).</p>
+<p class='text-slate-700'>Maîtrise de la contamination particulaire et de la propreté des pièces.</p>
+<p class='text-slate-700'>Traçabilité complète des lots, depuis la matière première jusqu’au produit fini.</p>
+<p class='text-slate-700'>Stabilité des procédés pour assurer la reproductibilité des tests in vitro.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>PMB Plast maîtrise l’ensemble de la chaîne de production des composants DIV :</h3>
+<p class='text-slate-700'>Co-conception : assistance technique, DFM, choix matière et analyse fonctionnelle.</p>
+<p class='text-slate-700'>Conception &amp; fabrication de moules : outillages mono ou multi-empreintes, haute précision, réalisés en interne.</p>
+<p class='text-slate-700'>Injection thermoplastique : presses 25 T à 210 T, production contrôlée, matières médicales traçables.</p>
+<p class='text-slate-700'>Contrôle et assemblage en atmosphère contrôlée (ISO 7 / ISO 8) : flux laminaire, absence de particules, contrôle dimensionnel.</p>
+<p class='text-slate-700'>Qualification et validation : IQ/OQ/PQ, dossiers techniques et support réglementaire client.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Un industriel du diagnostic moléculaire souhaitait industrialiser une cartouche micro-fluidique en PC médical, avec tolérance ± 0,05 mm et assemblage sous flux laminaire. PMB Plast a accompagné la conception, réalisé le moule multi-empreinte, puis industrialisé la production en salle propre. Résultat : 100 % de conformité, traçabilité numérique complète et délai de validation réduit de 20 %.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Qu’est-ce qu’un composant de diagnostic in vitro (DIV) ? C’est une pièce plastique destinée à des tests réalisés hors du corps humain (analyse sanguine, PCR, etc.), nécessitant propreté et précision dimensionnelle. Pourquoi choisir un partenaire certifié ISO 13485 ? Cette certification garantit un système qualité adapté au médical, incluant traçabilité, gestion des risques et validation process. PMB Plast produit-il en salle propre ? Oui, l’entreprise dispose de zones ISO 7 et ISO 8 pour l’injection et l’assemblage de pièces médicales.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Demandez votre étude gratuite</h3>
+<p class='text-slate-700'>Contactez nos experts pour évaluer la faisabilité et le coût de votre projet de diagnostic in vitro.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique DIV | PMB Plast ISO 13485</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Injection plastique pour dispositifs DIV. ISO 13485, salle propre, traçabilité complète. Demandez votre étude gratuite. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-diagnostic-in-vitro-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>salle-propre-DIV-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection plastique diagnostic in vitro PMB Plast », « Salle propre ISO 7 PMB Plast », « Moule médical haute précision ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>→ Dispositifs médicaux | Conception &amp; réalisation de moule | Secteur médical</h3></div>
+        </article>
+        
+
+        <article id="solutions-medicales-2-dispositifs-medicaux" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Solutions médicales</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">2 - Dispositifs médicaux</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>🏥 Page 1-2 – Dispositifs médicaux</h2>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique pour dispositifs médicaux – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Vous cherchez un partenaire en injection plastique certifié ISO 13485 pour la fabrication de vos dispositifs médicaux ? PMB Plast conçoit et produit des composants et sous-ensembles plastiques destinés aux dispositifs médicaux de classes I à III, en respectant les exigences réglementaires européennes (MDR 2017/745). Grâce à la maîtrise de la co-conception, de la réalisation de moules et de l’injection thermoplastique, nous assurons la reproductibilité, la propreté et la conformité de vos pièces. Nos équipes travaillent au quotidien avec les services qualité et bureaux d’études des fabricants de dispositifs médicaux pour garantir une intégration parfaite de chaque composant. PMB Plast, c’est un partenaire industriel fiable, réactif et engagé pour la qualité.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quelles sont les exigences clés pour un dispositif médical ? Respect des normes ISO 13485, MDR et FDA.</p>
+<p class='text-slate-700'>Sélection de matières médicales biocompatibles et traçables.</p>
+<p class='text-slate-700'>Production sous environnement maîtrisé (salle propre ISO 7 / 8).</p>
+<p class='text-slate-700'>Validation process (IQ/OQ/PQ) et contrôle qualité renforcé.</p>
+<p class='text-slate-700'>Documentation complète pour audits et enregistrements.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast intègre l’ensemble des compétences nécessaires à la fabrication de dispositifs médicaux : Co-conception : support DFM, prototypes, études fonctionnelles.</p>
+<p class='text-slate-700'>Conception et fabrication de moules : outillages haute précision, maintenance interne, suivi vie série.</p>
+<p class='text-slate-700'>Injection thermoplastique : presse 25–220T, matières techniques médicales (PMMA, PC, IXEF, PEEK, etc.).</p>
+<p class='text-slate-700'>Assemblage et contrôle : soudure ultrason, collage UV, inspection optique et conditionnement en salle propre.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Un fabricant d’instruments de surveillance a confié à PMB Plast la réalisation d’un boîtier plastique transparent nécessitant une haute résistance chimique et une finition optique parfaite. Grâce à la co-conception et à un outillage optimisé, PMB Plast a livré un composant conforme à la norme MDR, avec une réduction du rebut de 15 %.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels types de dispositifs médicaux fabrique PMB Plast ? Nous produisons des pièces et sous-ensembles pour dispositifs d’administration, de diagnostic, d’imagerie, ou encore des éléments de monitoring. Quelles certifications possède PMB Plast ? Nous sommes certifiés ISO 9001 et ISO 13485 pour la conception, l’injection et l’assemblage de composants plastiques médicaux. PMB Plast peut-il accompagner un projet dès la conception ? Oui, nos ingénieurs interviennent dès l’avant-projet pour garantir faisabilité, choix matière et design fonctionnel optimal.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Confiez-nous votre projet médical</h3>
+<p class='text-slate-700'>Demandez une étude technique ou un devis personnalisé pour vos composants plastiques médicaux.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique dispositifs médicaux | PMB Plast ISO 13485</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Spécialiste injection plastique pour dispositifs médicaux. ISO 13485, salle propre, traçabilité. Demandez une étude gratuite. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-dispositif-médical-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>salle-propre-médicale-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>moule-plastique-médical-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection plastique dispositif médical PMB Plast », « Salle propre ISO 8 PMB Plast », « Conception moule médical PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>→ Diagnostic In Vitro | Conception &amp; réalisation de moule | Secteur médical</h3></div>
+        </article>
+        </div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+    <section id="metiers" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Métiers</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <article id="metiers-1-co-conception-de-piece" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Métiers</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">1 Co-conception de pièce</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Co-conception de pièce - Menu Métiers</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🧩 Page – Co-conception de pièce</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Co-conception de pièces plastiques techniques – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Chez PMB Plast, la co-conception est au cœur de notre approche industrielle. Nous accompagnons les bureaux d’études et services R&amp;D dès les premières phases de développement pour transformer une idée en un produit industriel robuste, conforme et économiquement optimisé. Grâce à notre double expertise en conception de moules et en injection thermoplastique, nous anticipons les contraintes de production, d’assemblage et de qualité pour garantir la faisabilité du projet dès sa genèse. Nos ingénieurs travaillent main dans la main avec les équipes clients pour optimiser la géométrie, le choix matière et la performance du composant. PMB Plast, c’est la garantie d’un partenaire qui parle le même langage technique que vous — de la simulation numérique jusqu’à la première série injectée.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Pourquoi impliquer un partenaire industriel dès la conception d’une pièce plastique ? Anticiper les contraintes de fabrication et réduire les coûts d’outillage.</p>
+<p class='text-slate-700'>Optimiser le design pour l’injection : dépouilles, épaisseurs, nervures, flux matière.</p>
+<p class='text-slate-700'>Adapter le choix matière à la fonction et à l’environnement d’usage (résistance, stérilisation, aspect, friction).</p>
+<p class='text-slate-700'>Limiter les retouches et itérations lors des mises au point.</p>
+<p class='text-slate-700'>Garantir la reproductibilité du produit dès l’industrialisation.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>PMB Plast met à disposition une cellule technique dédiée à la co-conception :</h3>
+<p class='text-slate-700'>Analyse fonctionnelle et DFM (Design for Manufacturing) : étude du cahier des charges, contraintes produit et environnement.</p>
+<p class='text-slate-700'>Simulation et calcul : rhéologie (Moldflow), déformations, retraits, choix matière.</p>
+<p class='text-slate-700'>Prototypage rapide : impression 3D, pré-séries, essais d’assemblage.</p>
+<p class='text-slate-700'>Conception d’outillage : transfert fluide vers la réalisation de moules internes, maîtrise du couple pièce-moule.</p>
+<p class='text-slate-700'>Collaboration continue : réunions d’avancement, revue de conception, support technique.</p>
+<p class='text-slate-700'>Notre approche intégrée garantit une transition fluide entre conception, industrialisation et production série.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Un équipementier médical a sollicité PMB Plast pour co-concevoir une pièce injectée intégrant un système de verrouillage précis. Après étude fonctionnelle et simulation Moldflow, le design a été optimisé pour l’injection sans déformation, permettant de supprimer un usinage post-injection. Résultat : délai projet réduit de 30 % et coût global diminué de 18 %.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Qu’est-ce que la co-conception en plasturgie ? C’est un travail collaboratif entre le client et le sous-traitant pour concevoir une pièce optimisée pour l’injection plastique, intégrant contraintes mécaniques, esthétiques et économiques. À quel moment impliquer PMB Plast dans un projet ? Idéalement dès la phase de conception ou du prototype, afin d’optimiser le design et limiter les modifications en phase d’outillage. PMB Plast fournit-il des études ou simulations ? Oui, nous réalisons des analyses DFM, simulations d’écoulement et calculs de déformation via logiciels spécialisés (type Moldflow).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Optimisez la conception de vos pièces plastiques</h3>
+<p class='text-slate-700'>Contactez nos ingénieurs pour une étude DFM gratuite et personnalisée.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Co-conception de pièces plastiques | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Co-conception de pièces plastiques techniques. Optimisez vos projets dès la conception avec PMB Plast. Étude DFM gratuite. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>co-conception-piece-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>simulation-injection-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>conception-moule-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Co-conception pièce plastique PMB Plast », « Simulation injection plastique », « Conception moule PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>→ Conception &amp; réalisation de moule | Injection thermoplastique | Secteur médical</h3></div>
+        </article>
+        
+
+        <article id="metiers-2-conception-et-realisation-de-moule" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Métiers</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">2 Conception et réalisation de moule</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Conception et réalisation de moule - Menu Métiers</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>⚙️ Page – Conception &amp; réalisation de moule</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Conception et fabrication de moules d’injection plastique – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>La performance d’une pièce injectée dépend avant tout de la qualité du moule qui la produit. Chez PMB Plast, nous maîtrisons l’ensemble du cycle de vie du moule : de la conception 3D à la mise au point finale, en passant par l’usinage, l’ajustage et la maintenance. Grâce à notre bureau d’études outillage intégré et à un atelier de fabrication équipé de centres d’usinage haute précision, nous concevons des moules sur mesure pour des pièces techniques à forte exigence — médicales, industrielles ou de haute valeur ajoutée. Notre objectif : garantir la reproductibilité, la durabilité et la productivité de chaque outillage tout en réduisant les délais de mise sur le marché. Avec PMB Plast, vos moules sont pensés pour durer et produire juste dès la première injection.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Pourquoi confier la conception de vos moules à un spécialiste de l’injection ? Réduire les risques liés à la non-conformité du moule (retassures, déformations, bavures).</p>
+<p class='text-slate-700'>Garantir la compatibilité entre design pièce et contraintes d’injection.</p>
+<p class='text-slate-700'>Maîtriser les coûts d’outillage et les temps de mise au point.</p>
+<p class='text-slate-700'>Prolonger la durée de vie du moule et faciliter sa maintenance.</p>
+<p class='text-slate-700'>Intégrer la productivité dès la conception (temps de cycle, éjection, refroidissement).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast s’appuie sur plus de 30 ans d’expérience en conception et réalisation de moules d’injection plastique. Nos capacités internes permettent une réactivité maximale et un contrôle complet du process.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos prestations outillage :</h3>
+<p class='text-slate-700'>Étude 3D &amp; simulation : conception CAO, analyse rhéologique, DFM.</p>
+<p class='text-slate-700'>Usinage haute précision : centres 3 et 5 axes, électroérosion à fil et enfonçage.</p>
+<p class='text-slate-700'>Ajustage &amp; polissage : finition manuelle de précision, traitements de surface.</p>
+<p class='text-slate-700'>Essais &amp; validation : tests d’injection sur presses internes, contrôle dimensionnel.</p>
+<p class='text-slate-700'>Maintenance &amp; modifications : suivi de vie outillage, réparations, évolutions.</p>
+<p class='text-slate-700'>Cette intégration verticale garantit la cohérence entre la phase d’étude, la fabrication du moule et la production série.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Un acteur du diagnostic in vitro nous a confié la réalisation d’un moule multi-empreintes destiné à produire un couvercle microstructuré. L’étude Moldflow a permis d’optimiser les canaux d’alimentation et le refroidissement, assurant une homogénéité dimensionnelle parfaite. Résultat : cycle réduit de 22 %, absence de retassures visibles et productivité doublée par rapport à la version précédente.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quelles sont les capacités de fabrication de moules chez PMB Plast ? Nous réalisons des moules prototypes, pré-séries et séries jusqu’à 32 empreintes, avec des aciers de haute performance. PMB Plast fabrique-t-elle les moules en interne ? Oui, notre atelier intégré permet la conception, l’usinage, le montage et la mise au point sur site. Pouvez-vous entretenir ou modifier un moule existant ? Oui, nous assurons la maintenance préventive et curative de moules clients, y compris issus d’autres fabricants. Quelle durée de vie pour un moule d’injection PMB Plast ? Selon le matériau et le volume de production, la durée de vie peut dépasser plusieurs centaines de milliers de cycles, avec suivi de maintenance.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Confiez vos outillages à un partenaire de confiance. Contactez notre bureau d’études pour une analyse de faisabilité outillage.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Conception &amp; fabrication de moules | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Conception et fabrication de moules d’injection plastique. Étude, usinage, essais et maintenance intégrés. Contactez PMB Plast. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>conception-moule-injection-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>usinage-haute-precision-moule-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>atelier-outillage-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Conception moule injection PMB Plast », « Usinage moule plastique », « Atelier outillage PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Co-conception de pièce | Injection thermoplastique | Contrôle sous atmosphère contrôlée | Secteur médical</p></div>
+        </article>
+        
+
+        <article id="metiers-3-injection-thermoplastique" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Métiers</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">3 Injection thermoplastique</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Injection thermoplastique - Menu Métiers</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🔧 Page – Injection thermoplastique</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection thermoplastique de pièces techniques – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>L’injection thermoplastique est au cœur du savoir-faire de PMB Plast. Spécialiste de la transformation des polymères depuis plus de 30 ans, nous assurons la production de pièces techniques à haute valeur ajoutée, du prototype à la grande série. Grâce à un parc machines automatisé et connecté, et à une maîtrise complète de la chaîne de valeur — conception de moules, injection, contrôle et assemblage — PMB Plast garantit à ses clients des productions fiables, reproductibles et conformes aux exigences les plus strictes (médical, défense, luxe, industrie). Notre expertise couvre un large panel de matériaux thermoplastiques (PEEK, PC, ABS, PA, PP, TPE...) et de procédés avancés : surmoulage, inserts métalliques, contrôle sous atmosphère contrôlée. Avec PMB Plast, l’injection devient un levier de performance industrielle durable et maîtrisée.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Comment garantir la qualité et la stabilité des pièces injectées ? Assurer la stabilité dimensionnelle et la répétabilité des productions.</p>
+<p class='text-slate-700'>Choisir le matériau thermoplastique adapté aux contraintes mécaniques, chimiques ou esthétiques.</p>
+<p class='text-slate-700'>Optimiser les paramètres d’injection pour limiter retassures, déformations ou bavures.</p>
+<p class='text-slate-700'>Contrôler la traçabilité matière et les conditions d’environnement (température, hygrométrie, salle propre).</p>
+<p class='text-slate-700'>Réduire les temps de cycle tout en maîtrisant les coûts et la conformité produit.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast associe rigueur industrielle et maîtrise technologique pour offrir une injection plastique de haute précision.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos moyens et process :</h3>
+<p class='text-slate-700'>Parc machines : presses de 35 à 320 tonnes, pilotées en environnement contrôlé.</p>
+<p class='text-slate-700'>Robotisation : manipulation automatisée, extraction, insertions et conditionnement.</p>
+<p class='text-slate-700'>Contrôle process : suivi des paramètres en temps réel, SPC, traçabilité numérique.</p>
+<p class='text-slate-700'>Flexibilité matière : thermoplastiques techniques, biopolymères, additifs spécifiques.</p>
+<p class='text-slate-700'>Environnement qualité : zone dédiée aux productions sous contrôle ISO 9001 et ISO 13485.</p>
+<p class='text-slate-700'>L’intégration complète des étapes d’étude, d’injection et d’assemblage permet de garantir une qualité constante et une réactivité maximale sur chaque projet.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Un client du secteur du luxe a confié à PMB Plast la production d’un composant optique à forte exigence d’aspect. Grâce à la maîtrise des paramètres thermiques et à l’utilisation d’un outillage poli miroir, les pièces ont atteint un niveau de brillance parfait, sans reprise ni retouche. Résultat : taux de conformité supérieur à 99,8 % et réduction de 25 % du temps de cycle.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Qu’est-ce que l’injection thermoplastique ? C’est un procédé de transformation consistant à fondre une matière plastique pour l’injecter sous pression dans un moule, formant une pièce finie après refroidissement. Quels types de polymères sont utilisés chez PMB Plast ? Nous transformons la majorité des thermoplastiques techniques et standards : PC, ABS, PA, PP, POM, PEEK, TPE, etc. Réalisez-vous des petites séries ou uniquement de la production en volume ? Nous proposons des productions allant du prototype à la grande série, selon le besoin industriel. Peut-on injecter sous atmosphère contrôlée ? Oui, nous disposons d’une zone dédiée aux productions sous atmosphère maîtrisée pour les secteurs sensibles (médical, optique, électronique).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Besoin d’un partenaire fiable pour vos pièces injectées ? Demandez dès aujourd’hui une étude de faisabilité ou un essai d’injection.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection thermoplastique | PMB Plast expert plasturgie</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Injection thermoplastique de pièces techniques. PMB Plast, expert en plasturgie certifié ISO 9001 &amp; 13485. Étude de faisabilité gratuite. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-thermoplastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>presse-injection-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-production-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection thermoplastique PMB Plast », « Presse d’injection plastique », « Contrôle qualité injection plastique PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Conception &amp; réalisation de moule | Contrôle sous atmosphère contrôlée | Assemblage | Secteur médical</p></div>
+        </article>
+        
+
+        <article id="metiers-4-controle-sous-atmosphere-controle" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Métiers</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">4 Contrôle sous atmosphère contrôlé</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Contrôle sous atmosphère contrôlée - Menu Métiers</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🧪 Page – Contrôle sous atmosphère contrôlée</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Contrôle sous atmosphère contrôlée – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Dans les secteurs à haute exigence — médical, diagnostic in vitro, optique ou électronique — la maîtrise de l’environnement de production et de contrôle est un gage de qualité et de conformité. Chez PMB Plast, nous disposons d’un espace de contrôle sous atmosphère contrôlée, spécifiquement conçu pour assurer la propreté particulaire et la stabilité climatique nécessaires aux produits sensibles. Nos équipes qualité réalisent des contrôles dimensionnels, visuels et fonctionnels selon des protocoles stricts, garantissant la conformité des pièces injectées avant assemblage ou conditionnement. Grâce à cette infrastructure, nous répondons aux normes les plus exigeantes, notamment celles applicables au secteur médical (ISO 13485). PMB Plast, c’est la garantie d’une traçabilité totale et d’un contrôle maîtrisé dans un environnement parfaitement adapté à vos exigences industrielles.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Pourquoi contrôler vos pièces plastiques sous atmosphère contrôlée ? Éviter toute contamination particulaire ou biologique lors du contrôle ou de l’assemblage.</p>
+<p class='text-slate-700'>Garantir la conformité des produits destinés aux environnements stériles (DIV, dispositifs médicaux).</p>
+<p class='text-slate-700'>Maintenir une stabilité hygrométrique et thermique lors des mesures.</p>
+<p class='text-slate-700'>Répondre aux exigences réglementaires de validation (ISO 13485, ISO 14644).</p>
+<p class='text-slate-700'>Améliorer la fiabilité des contrôles dimensionnels et visuels.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast intègre le contrôle sous atmosphère contrôlée comme une étape clé de son process qualité.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos moyens de contrôle :</h3>
+<p class='text-slate-700'>Zone sous atmosphère contrôlée conforme aux exigences ISO.</p>
+<p class='text-slate-700'>Bancs de mesure tridimensionnelle (MMT) et instruments métrologiques de haute précision.</p>
+<p class='text-slate-700'>Contrôles visuels assistés par vision numérique.</p>
+<p class='text-slate-700'>Suivi SPC et traçabilité numérique des mesures.</p>
+<p class='text-slate-700'>Formation continue du personnel qualité et opérateurs.</p>
+<p class='text-slate-700'>Chaque lot est contrôlé selon un plan de contrôle défini avec le client, garantissant la conformité des pièces avant leur expédition ou leur intégration dans un assemblage.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Pour un fabricant de dispositifs médicaux, PMB Plast réalise le contrôle dimensionnel et visuel de capots injectés destinés à des kits de diagnostic. Grâce au contrôle sous atmosphère maîtrisée, la non-conformité particulaire a été réduite de 95 % et la stabilité dimensionnelle améliorée. Résultat : certification fournisseur renforcée et zéro retour qualité sur 12 mois de production.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Qu’est-ce qu’un contrôle sous atmosphère contrôlée ? C’est un contrôle effectué dans un environnement maîtrisé en température, hygrométrie et propreté particulaire, limitant tout risque de contamination. PMB Plast dispose-t-il d’une salle propre ? Nous réalisons les contrôles et assemblages dans une zone sous atmosphère contrôlée, adaptée aux exigences du secteur médical et industriel sensible. Quels types de contrôles sont réalisés ? Nous effectuons des mesures tridimensionnelles, contrôles visuels, dimensionnels, d’aspect et fonctionnels selon les plans de contrôle clients. Les contrôles sont-ils tracés ? Oui, chaque mesure est enregistrée et rattachée au lot de production, assurant une traçabilité complète conforme ISO 9001 et ISO 13485.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Assurez la conformité de vos productions sensibles. Contactez notre service qualité pour un audit ou une étude de faisabilité en environnement contrôlé.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Contrôle sous atmosphère contrôlée | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Contrôle qualité sous atmosphère contrôlée. PMB Plast garantit la conformité de vos pièces plastiques selon les normes ISO 9001 &amp; 13485. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-atmosphere-controlee-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>mesure-tridimensionnelle-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-qualite-medical-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Contrôle sous atmosphère contrôlée PMB Plast », « Mesure tridimensionnelle plastique », « Contrôle qualité médical PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>→ Injection thermoplastique | Assemblage | Secteur médical | Certifications</h3></div>
+        </article>
+        
+
+        <article id="metiers-5-assemblage" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Métiers</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">5 Assemblage</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Assemblage - Menu Métiers</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🔩 Page – Assemblage</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Assemblage de sous-ensembles plastiques – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Au-delà de la production de pièces injectées, PMB Plast accompagne ses clients jusqu’à la livraison de sous-ensembles complets et fonctionnels. Notre service d’assemblage intègre les opérations mécaniques, thermiques ou manuelles nécessaires pour livrer un produit prêt à l’emploi, conforme aux exigences techniques et réglementaires de chaque secteur. Grâce à une organisation industrielle flexible et à une maîtrise totale de la propreté environnementale, nous assurons des opérations d’assemblage sous atmosphère contrôlée, garantissant la qualité et la traçabilité des composants. Qu’il s’agisse d’un dispositif médical, d’un module technique ou d’un composant de précision, PMB Plast propose une approche intégrée — de l’injection à l’assemblage — pour réduire les flux logistiques et améliorer la fiabilité produit. PMB Plast, c’est la garantie d’un partenaire unique pour des ensembles plastiques complets, maîtrisés de bout en bout.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Pourquoi confier l’assemblage de vos pièces plastiques à un expert en injection ? Réduire les risques de contamination ou de non-conformité liés à des manipulations externes.</p>
+<p class='text-slate-700'>Garantir la compatibilité mécanique et géométrique entre les composants.</p>
+<p class='text-slate-700'>Centraliser la responsabilité qualité sur un seul partenaire industriel.</p>
+<p class='text-slate-700'>Optimiser les coûts logistiques et les délais de mise à disposition.</p>
+<p class='text-slate-700'>Assurer la traçabilité complète du lot assemblé.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast dispose d’une unité d’assemblage intégrée, adaptée aux productions techniques et médicales.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos moyens et procédés :</h3>
+<p class='text-slate-700'>Assemblage sous atmosphère contrôlée pour produits sensibles.</p>
+<p class='text-slate-700'>Méthodes d’assemblage variées : collage, vissage, encliquetage, soudure par ultrasons, sertissage.</p>
+<p class='text-slate-700'>Montages mécaniques ou hybrides (plastique + métal, plastique + électronique).</p>
+<p class='text-slate-700'>Contrôles fonctionnels : étanchéité, effort mécanique, compatibilité dimensionnelle.</p>
+<p class='text-slate-700'>Conditionnement et identification : marquage, étiquetage, traçabilité unitaire ou par lot.</p>
+<p class='text-slate-700'>Nos opérateurs qualifiés et nos procédures qualité certifiées garantissent un assemblage reproductible, propre et conforme aux spécifications de chaque client.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>PMB Plast a développé pour un client du diagnostic in vitro un sous-ensemble multi-pièces injectées, intégrant membranes et inserts métalliques. Grâce à la gestion complète du process (injection + assemblage en atmosphère contrôlée), le client a réduit de 40 % ses flux logistiques et atteint un taux de conformité supérieur à 99,9 %.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels types d’assemblages propose PMB Plast ? Nous réalisons des assemblages mécaniques, thermiques, collés ou par ultrasons selon la nature du produit et les contraintes techniques. PMB Plast assemble-t-elle uniquement ses propres pièces ? Principalement oui, mais nous pouvons assembler des composants externes dans le cadre d’un projet global. Les assemblages sont-ils réalisés en salle propre ? Nous disposons d’un espace sous atmosphère contrôlée, idéal pour les produits sensibles du médical, de l’optique ou de l’électronique. Assurez-vous le contrôle après assemblage ? Oui, chaque lot assemblé est contrôlé selon un plan de contrôle défini (étanchéité, aspect, fonction).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Simplifiez votre chaîne de production. Contactez PMB Plast pour une étude d’assemblage clé en main, de la pièce à l’ensemble fonctionnel.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Assemblage de sous-ensembles plastiques | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Assemblage de sous-ensembles plastiques sous atmosphère contrôlée. PMB Plast, partenaire complet de l’injection à l’intégration finale. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>assemblage-sous-ensemble-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>soudure-ultrasons-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-assemblage-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Assemblage sous-ensemble plastique PMB Plast », « Soudure ultrasons plastique », « Contrôle assemblage plastique PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Injection thermoplastique | Contrôle sous atmosphère contrôlée | Secteur médical | Certifications</p></div>
+        </article>
+        </div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+    <section id="secteurs" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Secteurs</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <article id="secteurs-1-medical" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Secteurs</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">1 Médical</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Médical - Menu Secteurs</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>⚕️ Page – Secteur Médical</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique pour le secteur médical – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Le secteur médical exige des partenaires capables d’allier précision, traçabilité et maîtrise de la propreté environnementale. Depuis plus de 30 ans, PMB Plast accompagne les industriels de la santé et du diagnostic dans la conception, la fabrication et l’assemblage de composants plastiques critiques. Certifiée ISO 13485, notre entreprise intervient sur l’ensemble de la chaîne de valeur : co-conception, réalisation de moules, injection thermoplastique, contrôle sous atmosphère contrôlée et assemblage. Nous développons des pièces à haute valeur ajoutée pour les dispositifs médicaux, les équipements de diagnostic in vitro (DIV) et les éléments de précision utilisés en laboratoire. Grâce à notre savoir-faire en injection de polymères techniques et à notre culture qualité, nous garantissons à nos clients du médical une fiabilité absolue, du prototype à la production série.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels sont les défis de l’injection plastique dans le médical ? Respecter les normes de qualité et de traçabilité (ISO 13485, marquage CE, biocompatibilité).</p>
+<p class='text-slate-700'>Garantir la propreté particulaire et chimique des pièces.</p>
+<p class='text-slate-700'>Assurer la stabilité dimensionnelle et la reproductibilité des lots.</p>
+<p class='text-slate-700'>Répondre à des délais courts tout en maintenant un haut niveau de conformité.</p>
+<p class='text-slate-700'>Intégrer la validation IQ/OQ/PQ dans le process industriel.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>PMB Plast met à disposition des acteurs du médical une expertise complète et intégrée :</h3>
+<p class='text-slate-700'>Co-conception : accompagnement des bureaux d’études sur la conception de pièces injectées.</p>
+<p class='text-slate-700'>Conception &amp; fabrication de moules : outillages haute précision, adaptés aux exigences médicales.</p>
+<p class='text-slate-700'>Injection thermoplastique : presses automatisées en environnement maîtrisé.</p>
+<p class='text-slate-700'>Contrôle sous atmosphère contrôlée : inspection particulaire et métrologique rigoureuse.</p>
+<p class='text-slate-700'>Assemblage &amp; conditionnement : sous-ensembles montés en atmosphère contrôlée.</p>
+<p class='text-slate-700'>Nos process sont validés selon les protocoles IQ/OQ/PQ et documentés pour garantir une traçabilité totale.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>PMB Plast a accompagné un industriel du diagnostic in vitro dans le développement d’un dispositif microfluidique intégrant plusieurs micro-canaux. La co-conception et l’étude Moldflow ont permis d’optimiser les flux matière et d’éviter toute inclusion d’air. Résultat : un produit parfaitement fonctionnel, validé IQ/OQ/PQ dès la première série, avec un taux de non-conformité inférieur à 0,2 %.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>PMB Plast est-elle certifiée ISO 13485 ? Oui, notre système de management de la qualité est certifié ISO 9001 et ISO 13485, couvrant les activités de conception, injection et assemblage. Produisez-vous en salle propre ? Nos contrôles et assemblages sont réalisés sous atmosphère contrôlée, conforme aux exigences du médical et du DIV. Quels types de dispositifs médicaux réalisez-vous ? Nous produisons des composants pour dispositifs médicaux de diagnostic, de mesure, d’analyse ou d’administration. Proposez-vous une assistance à la validation réglementaire ? Oui, nous accompagnons nos clients dans la constitution des dossiers techniques (IQ/OQ/PQ, documentation matière, FAI).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Vous recherchez un partenaire certifié ISO 13485 ? Contactez PMB Plast pour une étude technique et réglementaire de vos composants médicaux.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique médicale | PMB Plast ISO 13485</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Injection plastique pour dispositifs médicaux et DIV. PMB Plast, partenaire certifié ISO 13485, maîtrise totale du process. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-medicale-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>salle-propre-controle-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>dispositif-medical-injection-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection plastique médicale PMB Plast », « Contrôle salle propre PMB Plast », « Dispositif médical plastique PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Solutions médicales | Diagnostic In Vitro | Dispositifs médicaux | Contrôle sous atmosphère contrôlée | Certifications</p></div>
+        </article>
+        
+
+        <article id="secteurs-2-batiment" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Secteurs</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">2 Bâtiment</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Bâtiment - Menu Secteurs</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🏗️ Page – Secteur Bâtiment</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique pour le secteur du bâtiment – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Le secteur du bâtiment exige des composants plastiques robustes, durables et fiables, capables de résister à des environnements exigeants : variations thermiques, contraintes mécaniques, humidité, UV ou agents chimiques. PMB Plast accompagne les fabricants d’équipements et de systèmes du bâtiment dans la conception, l’injection et l’assemblage de pièces plastiques techniques. Notre expertise couvre les applications structurelles, d’étanchéité, de fixation ou d’habillage, où la précision et la longévité sont essentielles. Grâce à notre maîtrise complète du process — co-conception, conception de moules, injection thermoplastique et contrôle qualité intégré — nous assurons la reproductibilité et la conformité de chaque production, quelle que soit sa complexité. PMB Plast, c’est la garantie d’un partenaire industriel fiable pour des composants plastiques conçus pour durer, au service de la performance du bâtiment moderne.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels sont les besoins spécifiques du secteur du bâtiment en plasturgie ? Assurer la résistance mécanique et climatique des pièces injectées (chaleur, froid, UV, humidité).</p>
+<p class='text-slate-700'>Garantir la stabilité dimensionnelle sur le long terme.</p>
+<p class='text-slate-700'>Choisir des matériaux adaptés : polyamides renforcés, polypropylènes techniques, ABS, TPE.</p>
+<p class='text-slate-700'>Réduire le poids et les coûts de production par rapport au métal.</p>
+<p class='text-slate-700'>Respecter les normes de sécurité et de durabilité du bâtiment (EN, REACH, RoHS).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast met son savoir-faire au service des fabricants d’équipements de construction et d’aménagement :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos atouts techniques :</h3>
+<p class='text-slate-700'>Co-conception de pièces adaptées aux contraintes structurelles.</p>
+<p class='text-slate-700'>Conception &amp; fabrication de moules robustes et longue durée.</p>
+<p class='text-slate-700'>Injection thermoplastique de matériaux renforcés et haute performance.</p>
+<p class='text-slate-700'>Assemblage et contrôle qualité selon plan de validation client.</p>
+<p class='text-slate-700'>Suivi de production et traçabilité totale.</p>
+<p class='text-slate-700'>Nous produisons des pièces pour des applications variées : systèmes de fixation, raccords, joints, embouts, capots, caches ou pièces de structure plastique.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>PMB Plast a accompagné un fabricant de systèmes d’étanchéité dans la conception d’un élément de verrouillage injecté en polyamide chargé verre. Grâce à une étude DFM approfondie et à un outillage optimisé, le poids du composant a été réduit de 15 % tout en augmentant sa résistance mécanique. Résultat : gain de performance, réduction des coûts de production et suppression d’un usinage secondaire.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels matériaux utilisez-vous pour le bâtiment ? Nous travaillons avec une large gamme de thermoplastiques techniques : PA, PBT, PP, ABS, PC, TPE, avec ou sans charges renforçantes. Les pièces résistent-elles aux UV ou à l’humidité ? Oui, nous sélectionnons les polymères et additifs en fonction des conditions d’exposition (stabilisants UV, agents anti-humidité). Proposez-vous l’assemblage de pièces plastiques pour le bâtiment ? Oui, PMB Plast peut réaliser l’assemblage mécanique ou par soudure d’ensembles techniques. Assurez-vous la conception des moules ? Oui, nos outillages sont conçus et fabriqués en interne pour garantir robustesse et répétabilité.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Besoin d’un partenaire fiable pour vos composants plastiques du bâtiment ? Demandez une étude technique ou un prototype dès aujourd’hui.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique bâtiment | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>Pièces plastiques techniques pour le bâtiment. PMB Plast, expert injection thermoplastique, robustesse et durabilité garanties. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-batiment-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>piece-plastique-technique-batiment-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>outillage-moule-batiment-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Pièce plastique bâtiment PMB Plast », « Injection plastique technique », « Outillage moule bâtiment PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Conception &amp; réalisation de moule | Injection thermoplastique | Assemblage | Secteur défense</p></div>
+        </article>
+        
+
+        <article id="secteurs-3-defense" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Secteurs</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">3 Défense</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Défense - Menu Secteurs</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>🛡️ Page – Secteur Défense</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique technique pour le secteur de la Défense – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Le secteur de la Défense requiert des partenaires industriels capables de garantir précision, fiabilité et confidentialité à chaque étape de la production. PMB Plast met son expertise en injection thermoplastique et conception de moules techniques au service des acteurs de la Défense et de la sécurité. Nos composants plastiques répondent à des cahiers des charges exigeants : résistance mécanique, stabilité dimensionnelle, endurance aux contraintes thermiques et chimiques, tout en respectant les exigences de confidentialité propres au domaine militaire. Grâce à notre triple expertise – moules, injection, assemblage – et à un système qualité certifié ISO 9001, nous assurons la traçabilité complète et la maîtrise du process pour chaque pièce fabriquée. PMB Plast est un partenaire de confiance pour la production de composants plastiques techniques destinés aux applications de Défense, où chaque détail compte.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels défis pour les composants plastiques dans la Défense ? Résister à des conditions extrêmes : vibrations, chocs, températures élevées, humidité.</p>
+<p class='text-slate-700'>Assurer la confidentialité des données et des plans.</p>
+<p class='text-slate-700'>Maintenir une stabilité dimensionnelle sur le long terme.</p>
+<p class='text-slate-700'>Garantir la discrétion électromagnétique (EMC) via des matériaux spécifiques.</p>
+<p class='text-slate-700'>Travailler avec un partenaire industriel fiable et certifié, maîtrisant la chaîne complète.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast accompagne les industriels de la Défense dans la conception et la production de pièces critiques :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos compétences clés :</h3>
+<p class='text-slate-700'>Étude et co-conception avec les bureaux d’études clients.</p>
+<p class='text-slate-700'>Conception &amp; fabrication de moules à haute précision.</p>
+<p class='text-slate-700'>Injection thermoplastique de polymères techniques : PEEK, PPS, PA chargé fibre de verre, PC, PBT, etc.</p>
+<p class='text-slate-700'>Assemblage et contrôle qualité selon protocoles militaires.</p>
+<p class='text-slate-700'>Traçabilité complète et gestion sécurisée des données.</p>
+<p class='text-slate-700'>Nos productions concernent des composants pour systèmes électroniques embarqués, équipements de protection, dispositifs optiques, fixations et pièces structurelles.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>PMB Plast a participé à la production d’un boîtier électronique injecté en polyamide technique pour un équipement de communication militaire. L’enjeu : garantir une résistance mécanique élevée, une étanchéité parfaite et une compatibilité EMC. Grâce à une conception optimisée du moule et un choix matière adapté, la pièce a passé avec succès les tests de choc et de température imposés par le client. Résultat : fiabilité accrue et intégration sans défaut dans l’équipement final.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels types de polymères sont utilisés pour la Défense ? Nous utilisons des thermoplastiques techniques (PEEK, PPS, PA, PC, PBT) et pouvons intégrer des additifs pour résistance mécanique, thermique ou EMC. Comment PMB Plast gère-t-il la confidentialité des projets ? Les données, plans et outillages sont traités de manière sécurisée, avec un accès restreint et une traçabilité complète. PMB Plast est-il certifié pour le secteur Défense ? Notre système qualité est certifié ISO 9001, et nos pratiques respectent les exigences de confidentialité et de rigueur industrielle du domaine Défense. Réalisez-vous l’assemblage des sous-ensembles ? Oui, PMB Plast assure l’assemblage et le contrôle qualité des ensembles plastiques complexes, selon cahier des charges client.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Confiez vos projets sensibles à un partenaire de confiance. Contactez PMB Plast pour une étude confidentielle et un accompagnement technique complet.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique Défense | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>PMB Plast, expert en injection plastique pour la Défense. Fiabilité, confidentialité et précision au service des industriels du secteur. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-defense-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>piece-plastique-technique-defense-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-qualite-defense-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Pièce plastique Défense PMB Plast », « Injection thermoplastique militaire », « Contrôle qualité Défense PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Conception &amp; réalisation de moule | Injection thermoplastique | Secteur bâtiment | Certifications</p></div>
+        </article>
+        
+
+        <article id="secteurs-4-luxe" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Secteurs</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">4 Luxe</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Défense - Menu Secteurs</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>💎 Page – Secteur Luxe</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique de précision pour le secteur du luxe – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Dans l’univers du luxe, chaque détail compte. Les composants plastiques doivent allier esthétique parfaite, qualité perçue irréprochable et robustesse fonctionnelle. PMB Plast accompagne les grandes marques du luxe et de la parfumerie dans la conception, la fabrication et le contrôle de pièces plastiques haut de gamme. Grâce à notre savoir-faire en moules de haute précision, en injection thermoplastique fine et en contrôle esthétique rigoureux, nous garantissons une finition sans défaut et une conformité totale aux attentes des designers et responsables qualité. Nos équipes maîtrisent la production de pièces visibles, décoratives ou fonctionnelles, où la qualité de surface, la teinte et la répétabilité sont essentielles. PMB Plast conjugue technicité et exigence esthétique pour donner forme à vos créations les plus ambitieuses, dans le respect des standards du luxe français.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels sont les défis de l’injection plastique pour le luxe ? Obtenir une qualité de surface parfaite : absence de défauts visuels, brillance, texture maîtrisée.</p>
+<p class='text-slate-700'>Garantir la constance esthétique entre lots de production.</p>
+<p class='text-slate-700'>Intégrer des teintes spécifiques, effets matière ou métallisation.</p>
+<p class='text-slate-700'>Maintenir la stabilité dimensionnelle pour l’assemblage de pièces visibles.</p>
+<p class='text-slate-700'>Répondre à des délais courts sans compromis sur la qualité.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast met à disposition du secteur du luxe un savoir-faire technique et esthétique unique :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos compétences clés :</h3>
+<p class='text-slate-700'>Co-conception avec les équipes design pour optimiser le rendu visuel et la faisabilité.</p>
+<p class='text-slate-700'>Conception de moules haute précision, adaptés aux finitions et effets spéciaux.</p>
+<p class='text-slate-700'>Injection thermoplastique fine sur presses de dernière génération.</p>
+<p class='text-slate-700'>Assemblage et contrôle qualité esthétique, pièce par pièce.</p>
+<p class='text-slate-700'>Intégration de procédés spécifiques : surmoulage, bi-injection, polissage, traitements de surface.</p>
+<p class='text-slate-700'>Nous intervenons notamment sur des pièces de packaging premium, capots de parfum, accessoires de maroquinerie et éléments décoratifs pour le mobilier ou l’horlogerie.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Pour une maison de parfumerie française, PMB Plast a développé un capot injecté en ABS haute brillance avec effet miroir. La maîtrise du flux matière et du polissage du moule a permis d’obtenir une surface sans défaut visible, éliminant tout post-traitement. Résultat : réduction du temps de cycle de 12 %, homogénéité esthétique parfaite et satisfaction totale du client.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels matériaux utilisez-vous pour le luxe ? Nous travaillons principalement l’ABS, le PC, le PMMA, le PBT, le SAN ou encore le TPE, selon les besoins esthétiques et fonctionnels. Pouvez-vous garantir la répétabilité des teintes ? Oui, nous assurons un suivi rigoureux des lots matière et colorants, avec validation couleur en laboratoire interne. Réalisez-vous les traitements de surface ? Nous collaborons avec un réseau de partenaires spécialisés pour la métallisation, le vernissage, la sérigraphie et la tampographie. Les pièces sont-elles contrôlées visuellement ? Chaque lot fait l’objet d’un contrôle esthétique complet selon des critères définis avec le client (brillance, teinte, texture).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Sublimez vos créations avec une maîtrise technique d’exception. Contactez PMB Plast pour une étude de faisabilité ou un prototype de pièce haut de gamme.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique luxe | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>PMB Plast, expert en injection plastique haut de gamme. Pièces esthétiques, finition parfaite, qualité made in France. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-luxe-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>capot-parfum-plastique-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>controle-esthetique-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection plastique luxe PMB Plast », « Capot de parfum plastique haut de gamme », « Contrôle esthétique PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<p class='text-slate-700'>→ Co-conception de pièce | Conception &amp; réalisation de moule | Injection thermoplastique | Secteur loisirs</p></div>
+        </article>
+        
+
+        <article id="secteurs-5-loisirs" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Secteurs</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">5 Loisirs</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Défense - Menu Secteurs</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>⚙️ Page – Secteur Loisirs</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique pour le secteur des loisirs – PMB Plast</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Le marché des loisirs évolue rapidement et exige des composants plastiques robustes, ergonomiques et esthétiques, capables de répondre à des contraintes techniques et à des attentes clients élevées. PMB Plast accompagne les fabricants d’équipements de sport, d’articles de plein air, de produits électroniques grand public et de loisirs mécaniques dans la conception, la fabrication et l’assemblage de pièces plastiques performantes. Grâce à notre maîtrise du process complet — de la co-conception à l’injection thermoplastique en passant par l’assemblage et le contrôle qualité — nous assurons des produits fiables, esthétiques et parfaitement adaptés à leur usage. Nos clients du secteur des loisirs bénéficient de notre expertise technique, de notre réactivité et de notre flexibilité industrielle, au service de la performance et du design.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu expert</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Quels défis pour les pièces plastiques du secteur des loisirs ? Concevoir des produits solides, légers et ergonomiques.</p>
+<p class='text-slate-700'>Garantir la résistance mécanique et chimique (chocs, UV, humidité).</p>
+<p class='text-slate-700'>Répondre aux exigences esthétiques et fonctionnelles des utilisateurs finaux.</p>
+<p class='text-slate-700'>Optimiser les coûts de production grâce à une conception adaptée à l’injection.</p>
+<p class='text-slate-700'>Maintenir une qualité constante sur de grands volumes.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>PMB Plast est un partenaire reconnu pour la fabrication de pièces plastiques techniques dans les domaines du sport, des loisirs et de l’électronique grand public.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos savoir-faire clés :</h3>
+<p class='text-slate-700'>Co-conception de pièces optimisées pour la performance et la fabrication.</p>
+<p class='text-slate-700'>Conception et fabrication de moules robustes, multi-empreintes ou à effets de surface.</p>
+<p class='text-slate-700'>Injection thermoplastique de matériaux résistants (PA, PP, PC, ABS, TPE, etc.).</p>
+<p class='text-slate-700'>Assemblage et contrôle qualité selon vos spécifications fonctionnelles et esthétiques.</p>
+<p class='text-slate-700'>Intégration de procédés spéciaux : surmoulage, insert métal, bi-injection, marquage laser.</p>
+<p class='text-slate-700'>Nous intervenons pour des articles de sport, équipements nautiques, produits connectés, accessoires automobiles ou de mobilité.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Pour un fabricant d’équipements sportifs, PMB Plast a développé un poignée ergonomique surmoulée en TPE pour une meilleure préhension et résistance aux chocs. Grâce à la co-conception et à la simulation d’écoulement matière, le cycle d’injection a été optimisé de 18 %, tout en améliorant le confort d’utilisation du produit final. Résultat : un produit plus performant, plus durable et esthétiquement valorisant.</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ</li></ul>
+<p class='text-slate-700'>Quels matériaux utilisez-vous pour les produits de loisirs ? Nous travaillons avec des polymères techniques tels que le PA, le PP, l’ABS, le PC, le TPE et leurs variantes renforcées ou surmoulées. Proposez-vous la co-conception des pièces ? Oui, notre bureau d’études accompagne les clients dès la phase de conception pour optimiser la faisabilité et la durabilité du produit. Réalisez-vous des prototypes avant production série ? Oui, nous proposons la réalisation de prototypes fonctionnels et de petites séries pour validation esthétique et dimensionnelle. Vos produits peuvent-ils être personnalisés ? Oui, nous intégrons des options de personnalisation (couleur, texture, marquage, assemblage).</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<p class='text-slate-700'>Concevez des produits performants et attractifs pour vos marchés de loisirs. Demandez une étude de faisabilité ou un prototype dès aujourd’hui.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Title (≤ 60 caractères) :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Injection plastique loisirs | PMB Plast</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Meta Description (≤ 160 caractères) :</h3>
+<p class='text-slate-700'>PMB Plast, expert en injection plastique pour le secteur des loisirs. Performance, design et qualité made in France. Images :</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>injection-plastique-loisirs-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>piece-plastique-sport-PMBPlast.webp</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>surmoulage-TPE-PMBPlast.webp</h3>
+<p class='text-slate-700'>Alt : « Injection plastique loisirs PMB Plast », « Pièce plastique sport », « Surmoulage TPE PMB Plast ».</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Liens internes :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>→ Co-conception de pièce | Injection thermoplastique | Assemblage | Secteur luxe</h3></div>
+        </article>
+        </div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+    <section id="realisations" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Réalisations</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <article id="realisations-1-realisations" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Réalisations</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">1 Réalisations</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Description globale de nos capacités de productions (taille, poids, matière, process)</h2>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Créer des catégories de produits par Secteurs d’activité</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Description de la pièce :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Titre</h3>
+<p class='text-slate-700'>finalité du produit</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>matière</h3>
+<p class='text-slate-700'>taille + poids</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>process</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Sur chaque image, mettre un petit réglet très fin pour se rendre compte de l’échelle</h3>
+<p class='text-slate-700'>Droit à l’image !!!!!</p></div>
+        </article>
+        </div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+    <section id="entreprise" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Entreprise</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4">
+        <article id="entreprise-1-histoire" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Entreprise</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">1 - Histoire</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Histoire - Menu Entreprise</h2>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<p class='text-slate-700'>Unique, clair, avec le mot-clé principal.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : Injection plastique pour dispositifs médicaux et DIV</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Notre histoire</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Accroche claire → expliquer à qui s’adresse la page (persona cible : acheteurs, BE, qualité). Réponse directe à la question principale de l’utilisateur. Exemple : “Vous cherchez un sous-traitant injection plastique certifié ISO 13485 pour vos dispositifs médicaux ? PMB Plast accompagne les industriels de la santé dans la conception, l’injection et l’assemblage de composants critiques.” Question principale de l’utilisateur : D’où vient PMB Plast ? Quelle est son histoire ? “Besançon, capitale française de l’horlogerie et de la microtechnique, a vu naître nombre d’entreprises familiales issues de ce savoir-faire séculaire. Depuis plus de 60 ans, PMB Plast concrétise ses connaissances et cette passion du travail bien fait dans la réalisation de vos outillages, qui constituent le cœur même de vos pièces plastiques.”</p>
+<ul class='list-disc pl-6 space-y-1'><li>Images / Photos</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Photo du bâtiment</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Photos inspirant les microtechniques, l’horlogerie, Besançon</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Sous-titres H2 / H3 structurés (contenu expert)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Décrire les besoins typiques du secteur (ex. tolérances, biocompatibilité, traçabilité). Phrases simples, orientées “question/réponse” (GEO-friendly).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : “Quels matériaux choisir pour un dispositif DIV ?”</h3>
+<p class='text-slate-700'>L&#x27;enjeu pour l’utilisateur est de trouver une entreprise expérimentée, locale et pérenne.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>Présenter les services PMB liés à ce sujet. Intégrer schéma de process ou liste à puces. Exemple : conception → prototypage → injection → contrôle salle propre.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Plus de 60 ans d’expériences</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Qualité &amp; conformité</h3>
+<p class='text-slate-700'>Rassurer avec certifications, validations, normes. Exemple : ISO 9001, ISO 13485, IQ/OQ/PQ.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Non applicable</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Exemple de projet mené (secteur, problème, solution, résultats). Utiliser un mini storytelling.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Storytelling : à rédiger par FR (outilleur mouliste devenu plasturgiste)</h3>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ (schema.org FAQPage)</li></ul>
+<p class='text-slate-700'>3 à 5 questions fréquentes, en langage naturel. Exemples : Qu’est-ce qu’un composant DIV ? Pourquoi travailler avec un sous-traitant certifié ISO 13485 ? Quels contrôles qualité sont effectués en salle propre ? Où est né PMB Plast ? Depuis combien de temps PMB Plast existe ? Que veulent dire les lettres PMB ? Comment est né PMB Plast ?</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Bouton ou encadré visible :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>“Demander une étude gratuite” / “Télécharger la checklist DIV”</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Contactez nous</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<p class='text-slate-700'>Meta Title (60 caractères max) : inclure mot-clé principal + bénéfice.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : Injection plastique DIV | PMB Plast certifié ISO 13485</h3>
+<p class='text-slate-700'>Meta Description (160 caractères max) : accroche claire + CTA. Exemple : Spécialiste injection plastique pour dispositifs médicaux DIV. ISO 13485, salle propre, traçabilité. Demandez une étude. Images : renommer fichiers avec mots-clés + texte alternatif (alt).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Interne linking : lier la page vers : Equipe - Localisation / emplacement</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Géolocalisation (si pertinent)</li></ul>
+<p class='text-slate-700'>Paragraphe en bas de page (100–150 mots) pour ancrer PMB dans sa région. Exemple : Basé à Besançon, au cœur de la région Bourgogne-Franche-Comté, PMB Plast accompagne les industriels du médical en France et en Europe.</p></div>
+        </article>
+        
+
+        <article id="entreprise-6-certifications" class="rounded-2xl border bg-white p-6 md:p-8">
+          <div class="text-xs text-slate-500 mb-2">Entreprise</div>
+          <h2 class="text-2xl md:text-3xl font-semibold leading-tight">6 - Certifications</h2>
+          <div class="prose max-w-none mt-4"><h2 class='text-2xl md:text-3xl font-semibold leading-tight'>Page Certifications - Menu Entreprise</h2>
+<ul class='list-disc pl-6 space-y-1'><li>Titre de la page (H1)</li></ul>
+<p class='text-slate-700'>Unique, clair, avec le mot-clé principal.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : Injection plastique pour dispositifs médicaux et DIV</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Nos certifications</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Introduction (150–200 mots)</li></ul>
+<p class='text-slate-700'>Accroche claire → expliquer à qui s’adresse la page (persona cible : acheteurs, BE, qualité). Réponse directe à la question principale de l’utilisateur. Exemple : “Vous cherchez un sous-traitant injection plastique certifié ISO 13485 pour vos dispositifs médicaux ? PMB Plast accompagne les industriels de la santé dans la conception, l’injection et l’assemblage de composants critiques.” Question principale de l’utilisateur : Quelles sont les certifications de PMB Plast ? ISO 9001 ISO 13485 RSE</p>
+<ul class='list-disc pl-6 space-y-1'><li>Images / Photos</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Photos</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Sous-titres H2 / H3 structurés (contenu expert)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Vos enjeux / problématiques</h3>
+<p class='text-slate-700'>Décrire les besoins typiques du secteur (ex. tolérances, biocompatibilité, traçabilité). Phrases simples, orientées “question/réponse” (GEO-friendly).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : “Quels matériaux choisir pour un dispositif DIV ?”</h3>
+<p class='text-slate-700'>L&#x27;enjeu pour l’utilisateur est de trouver une entreprise certifiée</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Notre expertise / solutions</h3>
+<p class='text-slate-700'>Présenter les services PMB liés à ce sujet. Intégrer schéma de process ou liste à puces. Exemple : conception → prototypage → injection → contrôle salle propre. P</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>H2 – Cas concrets / études de cas</h3>
+<p class='text-slate-700'>Exemple de projet mené (secteur, problème, solution, résultats). Utiliser un mini storytelling. Détailler l’importance d’être ISO 13485</p>
+<ul class='list-disc pl-6 space-y-1'><li>FAQ (schema.org FAQPage)</li></ul>
+<p class='text-slate-700'>3 à 5 questions fréquentes, en langage naturel. Exemples : Qu’est-ce qu’un composant DIV ? Pourquoi travailler avec un sous-traitant certifié ISO 13485 ? Quels contrôles qualité sont effectués en salle propre ? N</p>
+<ul class='list-disc pl-6 space-y-1'><li>Call-to-Action (CTA)</li></ul>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Bouton ou encadré visible :</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>“Demander une étude gratuite” / “Télécharger la checklist DIV”</h3>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Contactez nous</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Optimisation SEO/GEO</li></ul>
+<p class='text-slate-700'>Meta Title (60 caractères max) : inclure mot-clé principal + bénéfice.</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Exemple : Injection plastique DIV | PMB Plast certifié ISO 13485</h3>
+<p class='text-slate-700'>Meta Description (160 caractères max) : accroche claire + CTA. Exemple : Spécialiste injection plastique pour dispositifs médicaux DIV. ISO 13485, salle propre, traçabilité. Demandez une étude. Images : renommer fichiers avec mots-clés + texte alternatif (alt).</p>
+<h3 class='text-lg md:text-xl font-semibold mt-6'>Interne linking : lier la page vers : Diagnostic In Vitro - Dispositifs médicaux - Médical</h3>
+<ul class='list-disc pl-6 space-y-1'><li>Géolocalisation (si pertinent)</li></ul>
+<p class='text-slate-700'>Paragraphe en bas de page (100–150 mots) pour ancrer PMB dans sa région. Exemple : Basé à Besançon, au cœur de la région Bourgogne-Franche-Comté, PMB Plast accompagne les industriels du médical en France et en Europe.</p>
+<ul class='list-disc pl-6 space-y-1'><li>Contenu page ancien site internet</li></ul></div>
+        </article>
+        </div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+    <section id="contact" class="space-y-6">
+      <div class="rounded-2xl border bg-white p-6 md:p-8">
+        <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Contact</h1>
+        <p class="text-slate-700 mt-2">Contenus issus des documents fournis.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-4"><p class='text-slate-600'>Aucun contenu pour le moment.</p></div>
+      <div class="mt-4">
+        <a href="#top" class="rounded-xl px-4 py-2 text-sm font-medium transition border hover:bg-slate-50">↑ Haut de page</a>
+      </div>
+    </section>
+    
+  </main>
+
+  <footer class="mt-16 border-t bg-white/60">
+    <div class="mx-auto w-full max-w-7xl px-4 md:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+      <div><div class="font-semibold mb-3">PMB PLAST</div>
+        <p class="text-slate-600">Partenaire industriel pour l'injection plastique et l'assemblage en environnement contrôlé.</p></div>
+      <div><div class="font-semibold mb-3">Sections</div>
+        <ul class="space-y-2"><li><a class="hover:underline" href="#solutions-medicales">Solutions médicales</a></li><li><a class="hover:underline" href="#metiers">Métiers</a></li><li><a class="hover:underline" href="#secteurs">Secteurs</a></li><li><a class="hover:underline" href="#realisations">Réalisations</a></li><li><a class="hover:underline" href="#entreprise">Entreprise</a></li><li><a class="hover:underline" href="#contact">Contact</a></li></ul></div>
+      <div><div class="font-semibold mb-3">Légal</div><ul class="space-y-2"><li><a href="#" class="hover:underline">Mentions légales</a></li><li><a href="#" class="hover:underline">Politique de confidentialité</a></li></ul></div>
+      <div><div class="font-semibold mb-3">Contact</div><p class="text-slate-600">+33 (0)3 00 00 00 00<br/>contact@pmbplast.fr</p>
+        <a href="#contact" class="inline-block rounded-xl px-4 py-2 text-sm font-medium transition bg-black text-white hover:bg-black/90 mt-3">Demander une étude</a></div>
+    </div>
+  </footer>
+</body>
+</html>
