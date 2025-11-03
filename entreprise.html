@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Entreprise</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    html { scroll-behavior: smooth; }
+    .hidden-important { display: none !important; }
+    /* Typo inspector */
+    .ti-tooltip{position:fixed;z-index:99999;max-width:320px;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;font-size:12px;line-height:1.2;pointer-events:none;background:rgba(17,24,39,.96);color:#fff;border-radius:10px;padding:10px 12px;box-shadow:0 10px 30px rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.08)}
+    .ti-badge{display:inline-block;padding:2px 6px;border-radius:9999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);margin-right:6px;font-size:11px}
+    .ti-toggle{position:fixed;left:12px;bottom:12px;z-index:99998;background:#fff;border:1px solid rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);border-radius:12px;padding:8px 10px;font-size:12px;display:flex;align-items:center;gap:8px}
+    .ti-toggle input{accent-color:#000}.ti-muted{opacity:.7}
+    .ti-kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;background:rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.1);padding:0 6px;border-radius:6px;font-size:11px}
+  </style>
+
+</head>
+<body class="min-h-screen bg-gradient-to-b from-slate-50 to-white text-slate-900">
+  <header class="sticky top-0 z-40 w-full border-b bg-white/80 backdrop-blur">
+    <div class="mx-auto w-full max-w-7xl px-4 md:px-6 flex items-center gap-2 py-3">
+      <a href="index.html" class="flex items-center gap-2">
+        <div class="h-9 w-9 rounded-xl bg-black text-white grid place-items-center font-bold">P</div>
+        <div class="leading-tight">
+          <div class="font-semibold">PMB PLAST</div>
+          <div class="text-[11px] text-slate-500">Injection & Assemblage – ISO 13485</div>
+        </div>
+      </a>
+      <nav class="ml-4 hidden lg:flex items-center gap-1">
+        <a href="index.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Accueil</a><a href="solutions-medicales.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Solutions médicales</a><a href="metiers.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Métiers</a><a href="secteurs.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Secteurs</a><a href="realisations.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Réalisations</a><a href="entreprise.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 bg-black text-white hover:bg-black/90">Entreprise</a><a href="contact.html" class="rounded-full px-4 py-2 text-sm font-medium transition hover:bg-slate-100 ">Contact</a>
+      </nav>
+      <div class="ml-auto flex items-center gap-2 w-full max-w-xs">
+        <input class="w-full rounded-xl border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black/10" placeholder="Rechercher…" />
+        <span class="rounded-xl px-4 py-2 text-sm font-medium transition border select-none hidden md:inline-flex">Rechercher</span>
+      </div>
+    </div>
+  </header>
+  <main class="mx-auto w-full max-w-7xl px-4 md:px-6 py-10 md:py-14">
+<section class="space-y-6">
+  <div class="rounded-2xl border bg-white p-6 md:p-8">
+    <h1 class="text-3xl md:text-4xl font-semibold leading-tight">Entreprise</h1>
+    <p class="text-slate-700 mt-2">Parcourez les pages détaillées ci-dessous.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-4"><a href="entreprise-1-histoire.html" class="rounded-2xl border bg-white p-5 hover:shadow-sm transition block">
+                <div class="font-semibold">1 - Histoire</div>
+                <p class="text-sm text-slate-600 mt-1">Entreprise</p>
+            </a>
+<a href="entreprise-6-certifications.html" class="rounded-2xl border bg-white p-5 hover:shadow-sm transition block">
+                <div class="font-semibold">6 - Certifications</div>
+                <p class="text-sm text-slate-600 mt-1">Entreprise</p>
+            </a></div>
+</section>
+</main>
+  <footer class="mt-16 border-t bg-white/60">
+    <div class="mx-auto w-full max-w-7xl px-4 md:px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+      <div><div class="font-semibold mb-3">PMB PLAST</div>
+        <p class="text-slate-600">Partenaire industriel pour l'injection plastique et l'assemblage en environnement contrôlé.</p></div>
+      <div><div class="font-semibold mb-3">Navigation</div>
+        <ul class="space-y-2"><li><a class="hover:underline" href="index.html">Accueil</a></li><li><a class="hover:underline" href="solutions-medicales.html">Solutions médicales</a></li><li><a class="hover:underline" href="metiers.html">Métiers</a></li><li><a class="hover:underline" href="secteurs.html">Secteurs</a></li><li><a class="hover:underline" href="realisations.html">Réalisations</a></li><li><a class="hover:underline" href="entreprise.html">Entreprise</a></li><li><a class="hover:underline" href="contact.html">Contact</a></li></ul></div>
+      <div><div class="font-semibold mb-3">Légal</div><ul class="space-y-2"><li><a href="#" class="hover:underline">Mentions légales</a></li><li><a href="#" class="hover:underline">Politique de confidentialité</a></li></ul></div>
+      <div><div class="font-semibold mb-3">Contact</div><p class="text-slate-600">+33 (0)3 00 00 00 00<br/>contact@pmbplast.fr</p>
+        <a href="contact.html" class="inline-block rounded-xl px-4 py-2 text-sm font-medium transition bg-black text-white hover:bg-black/90 mt-3">Demander une étude</a></div>
+    </div>
+  </footer>
+  
+  <div class="ti-toggle">
+    <label><input id="ti-enable" type="checkbox" /> Inspecteur typo</label>
+    <span class="ti-muted">Touche <span class="ti-kbd">T</span></span>
+  </div>
+  <div id="ti-tooltip" class="ti-tooltip" style="display:none"></div>
+
+  
+  <script>
+  (function(){
+    const tooltip=document.getElementById('ti-tooltip');
+    const toggle=document.getElementById('ti-enable');
+    let enabled=false;
+    const W={"100":"Thin","200":"Extra Light","300":"Light","400":"Regular","500":"Medium","600":"SemiBold","700":"Bold","800":"Extra Bold","900":"Black"};
+    function pxToRem(px){const base=parseFloat(getComputedStyle(document.documentElement).fontSize)||16;const v=parseFloat(px);return (v/base).toFixed(3)+'rem';}
+    function describe(el){const cs=getComputedStyle(el);const fam=(cs.fontFamily||'').split(',')[0].replace(/["']/g,'').trim();const size=cs.fontSize;const weight=cs.fontWeight;const wname=W[weight]||(parseInt(weight,10)>=700?'Bold+':(parseInt(weight,10)<=300?'Light-':'Regular-ish'));const style=cs.fontStyle;const lh=cs.lineHeight;const ls=cs.letterSpacing;const tag=el.tagName.toLowerCase();const classes=Array.from(el.classList||[]).filter(c=>/^(text-|font-|leading-|tracking-)/.test(c));return `
+      <div><span class="ti-badge">${tag}</span><span class="ti-badge">${fam}</span></div>
+      <div><b>Taille</b> : ${size} <span class="ti-muted">(${pxToRem(size)})</span></div>
+      <div><b>Graisse</b> : ${weight} <span class="ti-muted">(${wname}${style==='italic'?' • italic':''})</span></div>
+      <div><b>Interlignage</b> : ${lh}</div>
+      <div><b>Esp. lettres</b> : ${ls}</div>
+      ${classes.length?('<div><b>Tailwind</b> : '+classes.join(' ')+'</div>'):''}
+    `;}
+    function pos(e){const pad=12;let x=e.clientX+pad,y=e.clientY+pad;tooltip.style.display='block';tooltip.style.left=x+'px';tooltip.style.top=y+'px';const r=tooltip.getBoundingClientRect();if(x+r.width>innerWidth-8) tooltip.style.left=(e.clientX-r.width-pad)+'px';if(y+r.height>innerHeight-8) tooltip.style.top=(e.clientY-r.height-pad)+'px';}
+    function isTextual(el){if(!el||!(el instanceof Element))return false;const t=(el.innerText||'').trim();if(!t)return false;const s=getComputedStyle(el);return s.display!=='none'&&s.visibility!=='hidden'&&parseFloat(s.fontSize)>0;}
+    document.addEventListener('mousemove', e=>{ if(enabled) pos(e); });
+    document.addEventListener('mouseover', e=>{ if(!enabled) return; const t=e.target; if(t.closest('.ti-toggle')||t.closest('.ti-tooltip')) return; if(isTextual(t)) tooltip.innerHTML=describe(t); else tooltip.style.display='none';}, true);
+    document.addEventListener('mouseout', e=>{ if(!enabled) return; const to=e.relatedTarget; if(to&&(to.closest?.('.ti-toggle')||to.closest?.('.ti-tooltip'))) return; tooltip.style.display='none';}, true);
+    function set(v){enabled=v;toggle.checked=v;document.body.classList.toggle('cursor-help',v); if(!v) tooltip.style.display='none';}
+    toggle.addEventListener('change',()=>set(toggle.checked));
+    document.addEventListener('keydown',e=>{ if(e.key.toLowerCase()==='t') set(!enabled); });
+  })();
+  </script>
+
+</body>
+</html>
